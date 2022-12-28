@@ -139,11 +139,11 @@ public class ProjetSpring3ingApplication {
 		LigneCommande l5 = new LigneCommande(4, p44, cd1);
 		
 		
-		ligneCommandeDAO.save(l1);
-		ligneCommandeDAO.save(l2);
-		ligneCommandeDAO.save(l3);
-		ligneCommandeDAO.save(l4);
-		ligneCommandeDAO.save(l5);
+//		ligneCommandeDAO.save(l1);
+//		ligneCommandeDAO.save(l2);
+//		ligneCommandeDAO.save(l3);
+//		ligneCommandeDAO.save(l4);
+//		ligneCommandeDAO.save(l5);
 		
 		/* Gestion des utililsateurs */
 		MetierVentes mv = ctx.getBean(MetierVentes.class);
