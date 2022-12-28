@@ -1,4 +1,4 @@
-Sujet 3 : Gestion des catégories
+Sujet 3 : Gestion des catégories \n
 Change these properties in application.properties file :
 spring.datasource.url=jdbc:mysql://localhost/YOUR_DATABASE_NAME?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
 spring.datasource.username=MYSQL_USERNAME
