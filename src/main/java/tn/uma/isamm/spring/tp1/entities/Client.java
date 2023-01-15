@@ -16,11 +16,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import lombok.Data;
 import org.hibernate.annotations.Generated;
 import org.hibernate.service.ServiceRegistry;
 
 @Entity
 @Table(name="CLIENTS")
+@Data
 public class Client implements Serializable{
 	@Id
 	@GeneratedValue

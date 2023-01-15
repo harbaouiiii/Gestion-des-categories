@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tn.uma.isamm.spring.tp1.entities.Categorie;
 import tn.uma.isamm.spring.tp1.entities.Produit;
@@ -53,26 +51,26 @@ public class CategorieController {
         return "categories/categories";
     }
 
-    @RequestMapping("/admin/ajouterCategorie")
+    @GetMapping("/admin/ajouterCategorie")
     public String ajouterCategorie(Model model){
         model.addAttribute("categorie", new Categorie());
         return "categories/ajouterCategorie";
     }
 
-    @RequestMapping(value = "/admin/ajouterCategorie", method = RequestMethod.POST)
+    @PostMapping("/admin/ajouterCategorie")
     public String ajouterCategorie(Categorie categorie){
         metierCategories.saveCategorie(categorie);
         return "redirect:/user/categories";
     }
 
-    @RequestMapping("/admin/modifierCategorie")
+    @GetMapping("/admin/modifierCategorie")
     public String modifierCategorie(@RequestParam(name = "id") Long id,Model model){
         Categorie categorie = metierCategories.getCategorieById(id);
         model.addAttribute("categorie", categorie);
         return "categories/modifierCategorie";
     }
 
-    @RequestMapping(value = "/admin/modifierCategorie", method = RequestMethod.POST)
+    @PostMapping(value = "/admin/modifierCategorie")
     public String modifierCategorie(Categorie categorie){
         metierCategories.saveCategorie(categorie);
         return "redirect:/user/categories";
