@@ -15,7 +15,7 @@ public interface MetierVentes {
 	public void saveProduit(Produit p);
 	public Produit getProduitById(long id);
 	public Page<Produit> getProduitsPageable(int page, int size);
-	public List<Produit> getProduitsByCategorie(Categorie categorie);
+	public Page<Produit> getProduitsByCategorie(Categorie categorie, int page, int size);
 	public List<Produit> getAll(String critere);
 	public List<Categorie> getCategories();
 	public void deleteProduit(Long id);
@@ -24,6 +24,12 @@ public interface MetierVentes {
 	public void addRoleToUser(String login, String nomRole);
 	public AppUser getUserByLogin(String login);
 	public List<AppUser> getAppUsers();
+
+	public Page<Produit> sortByDesigProduit(int page, int size);
+
+	public Page<Produit> sortByPrixProduitAsc(int page, int size);
+
+	public Page<Produit> sortByPrixProduitDesc(int page, int size);
 	
 	
 	//Page<Produit> getProduitsPageableByDesignation(int page, int size, String mc);

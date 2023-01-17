@@ -13,4 +13,6 @@ public interface MetierCategories {
     public void saveCategorie(Categorie c);
     public void deleteCategorie(Long id);
 
+    public List<Categorie> getCategorieByName(String name);
+
 }

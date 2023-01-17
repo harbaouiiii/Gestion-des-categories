@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,8 +60,9 @@ public class MetierVentesImpl implements MetierVentes {
 	}
 
 	@Override
-	public List<Produit> getProduitsByCategorie(Categorie categorie) {
-		return produitDAO.findByCategorie(categorie);
+	public Page<Produit> getProduitsByCategorie(Categorie categorie, int page, int size) {
+		Pageable pageable = PageRequest.of(page,size);
+		return produitDAO.findByCategorie(categorie,pageable);
 	}
 
 	@Override
@@ -129,7 +131,24 @@ public class MetierVentesImpl implements MetierVentes {
 		// TODO Auto-generated method stub
 		return appUserDAO.findAll();
 	}
-	
-	
+
+	@Override
+	public Page<Produit> sortByDesigProduit(int page, int size) {
+		Pageable pageable = PageRequest.of(page,size);
+		return produitDAO.findAllByOrderByDesigProduit(pageable);
+	}
+
+	@Override
+	public Page<Produit> sortByPrixProduitAsc(int page, int size) {
+		Pageable pageable = PageRequest.of(page,size);
+		return produitDAO.findAllByOrderByPrixProduitAsc(pageable);
+	}
+
+	@Override
+	public Page<Produit> sortByPrixProduitDesc(int page, int size) {
+		Pageable pageable = PageRequest.of(page,size);
+		return produitDAO.findAllByOrderByPrixProduitDesc(pageable);
+	}
+
 
 }

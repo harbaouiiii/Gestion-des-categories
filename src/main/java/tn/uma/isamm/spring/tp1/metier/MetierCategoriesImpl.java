@@ -42,4 +42,9 @@ public class MetierCategoriesImpl implements MetierCategories {
     public void deleteCategorie(Long id) {
         categorieDAO.deleteById(id);
     }
+
+    @Override
+    public List<Categorie> getCategorieByName(String name) {
+        return categorieDAO.findByNomCategContaining(name);
+    }
 }

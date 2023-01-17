@@ -40,14 +40,13 @@ public class ControleurProduit {
 			Model model,
 			@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "3") int size,
-			@RequestParam(name = "errorMessage", defaultValue = "") String errorMessage) {
+			@RequestParam(name = "tri", defaultValue = "") String tri,
+			@RequestParam(name = "categorie", defaultValue = "") String categorie){
 		Page<Produit> listeProduits = metierVentes.getProduitsPageable(page, size);
-//		if(page == listeProduits.getTotalPages()) {
-//			page--;
-//			listeProduits = metierVentes.getProduitsPageable(page, size);
-//		}
 		model.addAttribute("activePage", page);
 		model.addAttribute("size", size);
+		model.addAttribute("tri",tri);
+		model.addAttribute("categorie",categorie);
 		int[] taillePagination = IntStream.range(0, listeProduits.getTotalPages()).toArray();
 		model.addAttribute("taillePagination", taillePagination);
 		model.addAttribute("nbPages", listeProduits.getTotalPages());
@@ -78,26 +77,36 @@ public class ControleurProduit {
 
 
 	@RequestMapping(value = "/user/produits", method = RequestMethod.POST)
-	public String filtrerProduit(@RequestParam(defaultValue = "") String categorie,
-							   @RequestParam(defaultValue = "") String tri,
+	public String filtrerProduit(@RequestParam(defaultValue = "", name = "categorie") String categorie,
+							   @RequestParam(defaultValue = "", name = "tri") String tri,
+							   @RequestParam(name = "page", defaultValue = "0") int page,
+							   @RequestParam(name = "size", defaultValue = "3") int size,
 							   Model model, RedirectAttributes redirectAttributes){
-		List<Produit> produits = new ArrayList<>();
+		Page<Produit> listeProduits = null;
 		if(!tri.isEmpty()){
-			tri = tri.replace(",","");
-			produits = metierVentes.getAll(tri);
+			tri=tri.replace(",","");
+			if(tri.equals("desigProduit"))
+				listeProduits = metierVentes.sortByDesigProduit(page, size);
+			else if (tri.equals("prixProduit"))
+				listeProduits = metierVentes.sortByPrixProduitAsc(page,size);
 		}
 		if(!categorie.isEmpty()){
 			categorie = categorie.replace(",","");
-			produits = metierVentes.getProduitsByCategorie(metierCategories.getCategorieById(Long.parseLong(categorie)));
+			Categorie cat = metierCategories.getCategorieById(Long.parseLong(categorie));
+			listeProduits = metierVentes.getProduitsByCategorie(cat, page,size);
 		}
 		boolean etat = true;
-		if (produits == null)
+		if (listeProduits == null)
 			etat = false;
 		else {
-			model.addAttribute("activePage", 0);
-			model.addAttribute("size", 3);
-			model.addAttribute("taillePagination", 0);
-			model.addAttribute("listeProduits", produits);
+			model.addAttribute("activePage", page);
+			model.addAttribute("size", size);
+			int[] taillePagination = IntStream.range(0, listeProduits.getTotalPages()).toArray();
+			model.addAttribute("taillePagination", taillePagination);
+			model.addAttribute("nbPages", listeProduits.getTotalPages());
+			model.addAttribute("nbElements", listeProduits.getTotalElements());
+			model.addAttribute("listeCategories",metierVentes.getCategories());
+			model.addAttribute("listeProduits", listeProduits);
 			model.addAttribute("listeCategories",metierVentes.getCategories());
 			model.addAttribute("etat", etat);
 		}
@@ -139,7 +148,6 @@ public class ControleurProduit {
 								   Long size,
 								   RedirectAttributes ra) {
 		metierVentes.deleteProduit(id);
-		System.out.println(" ----"+activePage);
 		if(activePage>0 && ((nbElements-1)==(size * (activePage))))
 			activePage--;
 		ra.addAttribute("page", activePage);

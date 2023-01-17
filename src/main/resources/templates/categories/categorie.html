@@ -59,7 +59,7 @@
                                 <td width="33%" th:text="${categorie.nomCateg}"></td>
                                 <td width="33%" >
                                     <a th:if="${nombreProduits==0}" th:text="${nombreProduits}"></a>
-                                    <a th:if="${nombreProduits>0}" th:text="${nombreProduits}" th:href="@{/user/produits(categorie=${id})}"></a>
+                                    <a th:if="${nombreProduits>0}" th:text="${nombreProduits}" th:href="@{/user/produits(categorie=${categorie.codeCateg})}"></a>
                                 </td>
                             </tr>
                         </table>

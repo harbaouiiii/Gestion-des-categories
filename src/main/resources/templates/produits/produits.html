@@ -96,10 +96,6 @@
 								<tr th:each="p:${listeProduits}">
 									<td width="2%" th:text="${p.codeProduit}"></td>
 									<td width="50%" th:text="${p.desigProduit}"></td>
-									<!-- 								<td> -->
-									<!-- 									<a th:text="${f.code}" -->
-									<!-- 										th:href="@{/user/consulterformation(page=0, size=2,id=${f.id})}"></a> -->
-									<!-- 								</td>								 -->
 									<td th:text="${p.prixProduit}"></td>
 									<td th:text="${p.uniteProduit}"></td>
 									<td th:text="${p.class.simpleName}"></td>
@@ -108,7 +104,7 @@
 											<i class="fas fa-edit"></i>
 									</a></td>
 									<td width="5%"><a class="btn btn-sm btn-danger"
-										onclick="return confirm('Etes-vous sûr de vouloir supprimer cette formation?');"
+										onclick="return confirm('Etes-vous sûr de vouloir supprimer cet produit?');"
 										th:href="@{/admin/supprimerProduit(id=${p.codeProduit}, activePage=${activePage}, nbElements = ${nbElements}, size = ${size})}">
 											<i class="fas fa-trash-alt"></i>
 									</a></td>

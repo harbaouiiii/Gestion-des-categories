@@ -29,8 +29,7 @@ public class CategorieController {
     @RequestMapping("/user/categories")
     public String categories(Model model,
         @RequestParam(name = "page", defaultValue = "0") int page,
-        @RequestParam(name = "size", defaultValue = "3") int size,
-        @RequestParam(name = "errorMessage", defaultValue = "") String errorMessage){
+        @RequestParam(name = "size", defaultValue = "3") int size){
         Page<Categorie> listeCategories = metierCategories.getCategoriesPageable(page, size);
         model.addAttribute("activePage", page);
         model.addAttribute("size", size);
@@ -43,10 +42,8 @@ public class CategorieController {
     }
 
     @RequestMapping(value = "/user/rechercheCategorie", method = RequestMethod.POST)
-    public String rechercherCategorie(long id, Model model){
-        List<Categorie> listeCategories = new ArrayList<>();
-        Categorie categorie = metierCategories.getCategorieById(id);
-        listeCategories.add(categorie);
+    public String rechercherCategorie(String mc, Model model){
+        List<Categorie> listeCategories = metierCategories.getCategorieByName(mc);
         model.addAttribute("listeCategories", listeCategories);
         return "categories/categories";
     }
@@ -78,11 +75,12 @@ public class CategorieController {
 
     @RequestMapping("/admin/supprimerCategorie")
     public String supprimerCategorie(@RequestParam Long id,
-                                     Long activePage,
-                                     Long nbElements,
-                                     Long size,
+                                     int activePage,
+                                     int nbElements,
+                                     @RequestParam(defaultValue = "0") int page,
+                                     int size,
                                      RedirectAttributes redirectAttributes){
-        List<Produit> produits = metierVentes.getProduitsByCategorie(metierCategories.getCategorieById(id));
+        Page<Produit> produits = metierVentes.getProduitsByCategorie(metierCategories.getCategorieById(id), page,size);
         produits.forEach( produit -> produit.setCategorie(null));
         metierCategories.deleteCategorie(id);
         if(activePage>0 && ((nbElements-1)==(size * (activePage))))
@@ -92,12 +90,14 @@ public class CategorieController {
     }
 
     @RequestMapping("user/categorie")
-    public String detailsCategorie(@RequestParam(name = "id") Long id, Model model){
+    public String detailsCategorie(@RequestParam(name = "id") Long id, Model model, @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "3") int size){
         Categorie categorie = metierCategories.getCategorieById(id);
-        List<Produit> produits = metierVentes.getProduitsByCategorie(categorie);
+        Page<Produit> produits = metierVentes.getProduitsByCategorie(categorie, page,size);
         model.addAttribute("categorie", categorie);
-        model.addAttribute("nombreProduits", produits.size());
-        model.addAttribute("id", categorie.getCodeCateg().toString());
+        model.addAttribute("nombreProduits", produits.getContent().size());
+        model.addAttribute("id", categorie.getCodeCateg());
+        System.out.println(categorie.getProduits().size());
         return "categories/categorie";
     }
 
